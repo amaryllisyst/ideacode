@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		 					http://www.springframework.org/schema/beans/spring-beans.xsd
+		 					http://www.springframework.org/schema/context
+		 					http://www.springframework.org/schema/context/spring-context.xsd
+		 					http://www.springframework.org/schema/mvc
+		 					http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+
+	<!-- 1.扫描controller所在包 -->
+	<context:component-scan base-package="com.yst.controller"></context:component-scan>
+
+	<!-- 2.配置自己的dateConverter -->
+	<bean id="myDateConverter" class="com.yst.vo.DateConverter"></bean>
+
+	<!-- 3.注册自己定义的dateConverter -->
+	<bean id="dateConverter" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<ref bean="myDateConverter"/>
+		</property>
+	</bean>
+
+	<!-- 4.配置mvc处理器 -->
+	<mvc:annotation-driven  conversion-service="dateConverter"/>
+
+	<!-- 5.配置视图解析器的前后缀 -->
+	<bean id="resolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+
+	<!-- 6.解决静态资源拦截的问题  -->
+	<mvc:default-servlet-handler/>
+
+	<!-- 配置文件上传视图解析器     这里id 必须是multipartResolver 规定的 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>1024000000000000000</value>
+		</property>
+	</bean>
+
+
+
+	<!-- 进行配置   jackjson 的日期格式处理-->
+	<mvc:annotation-driven >
+		<mvc:message-converters >
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<!-- 日期格式 -->
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg>
+									<value>yyyy-MM-dd</value>
+								</constructor-arg>
+							</bean>
+						</property>
+
+						<property name="serializationInclusion">
+							<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/menu/**"/>
+			<mvc:exclude-mapping path="/admin/login"/>
+			<mvc:exclude-mapping path="/validateCode/code"/>
+			<bean class="com.yst.controller.LoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>
+

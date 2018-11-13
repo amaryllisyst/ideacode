@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.AlbumDAO">
+    <insert id="insert" parameterType="Album">
+          insert into buddha_album	values(#{albumId},#{title},#{albumPublishDate},#{albumConverPath},#{albumStar},#{albumAuthor},#{albumBroadCast},#{albumBrief})
+    </insert>
+
+    <delete id="delete" parameterType="Album">
+         delete from buddha_album where album_id=#{id}
+    </delete>
+
+    <update id="update" parameterType="Album">
+      update buddha_album set album_title =#{title},album_publishDate=#{albumPublishDate},album_coverPath=#{albumConverPath} ,
+    album_star=#{albumStar},album_author=#{albumAuthor},album_broadCast=#{albumBroadCast},album_brief=#{albumBrief} where album_id=#{albumId}
+    </update>
+
+    <select id="queryByPage" resultMap="MyAlbum">
+        select  album_id,album_title ,album_publishDate,album_coverPath ,album_star,album_author,album_broadCast,album_brief from  buddha_album  limit #{start},#{rows}
+    </select>
+    <select id="queryOne" resultMap="MyAlbum">
+        select  album_id,album_title ,album_publishDate,album_coverPath ,album_star,album_author,album_broadCast,album_brief from  buddha_album  where album_id=#{id}
+    </select>
+    <select id="queryAll" resultMap="MyAlbum">
+       select   a.album_id,  a.album_title ,a.album_coverPath, c.chapter_id,c.chapter_size,c.chapter_title,c.chapter_uploadDate,c.chapter_downloadPath,c.chapter_duration  from  buddha_album  a    left outer join  buddha_chapter c    on c.album_id=a.album_id
+
+    </select>
+
+
+    <resultMap id="MyAlbum" type="com.yst.entity.Album">
+        <id column="album_id" property="albumId"/>
+        <result column="album_title" property="title"/>
+        <result column="album_publishDate" property="albumPublishDate"/>
+        <result column="album_coverPath" property="albumConverPath"/>
+        <result column="album_star" property="albumStar"/>
+        <result column="album_author" property="albumAuthor"/>
+        <result column="album_broadCast" property="albumBroadCast"/>
+        <result column="album_brief" property="albumBrief"/>
+        <collection property="children" ofType="Chapter">
+            <id column="chapter_id" property="chapterId"/>
+            <result column="chapter_title" property="title"/>
+            <result column="chapter_size" property="chapterSize"/>
+            <result column="chapter_duration" property="chapterDuration"/>
+            <result column="chapter_downloadPath" property="chapterDownloadPath"/>
+            <result column="chapter_uploadDate" property="chapterUploadDate"/>
+        </collection>
+    </resultMap>
+
+
+</mapper>

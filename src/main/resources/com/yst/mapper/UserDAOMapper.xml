@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.UserDAO">
+    <insert id="insert" parameterType="User">
+          insert into buddha_user values(#{userId},#{userPhone},#{userNickname},#{userRealname},#{userPassword},
+     #{userSalt},#{userProvince},#{userCity},#{userAvatar},#{userSign},#{userGender},#{userStatus},#{userDate})
+    </insert>
+
+    <delete id="delete" parameterType="User">
+        delete from buddha_user where user_id=#{userId}
+    </delete>
+
+    <update id="update" parameterType="User">
+      update  buddha_user set   user_status=#{userStatus} where user_id=#{userId}
+
+    </update>
+
+    <select id="queryByPage" resultMap="MyUser">
+          select user_id,user_phone,user_nickname,user_realname,user_password,user_salt,user_province,user_city,user_avatar,user_sign,user_gender,user_status,user_date from buddha_user limit #{start},#{rows}
+    </select>
+    <select id="queryOne" resultMap="MyUser">
+          select user_id,user_phone,user_nickname,user_realname,user_password,user_salt,user_province,user_city,user_avatar,user_sign,user_gender,user_status,user_date from buddha_user where user_id=#{userId}
+    </select>
+
+    <resultMap id="MyUser" type="com.yst.entity.User">
+        <id column="user_id" property="userId"/>
+        <result column="user_phone" property="userPhone"/>
+        <result column="user_nickname" property="userNickname"/>
+        <result column="user_realname" property="userRealname"/>
+        <result column="user_password" property="userPassword"/>
+        <result column="user_salt" property="userSalt"/>
+        <result column="user_province" property="userProvince"/>
+        <result column="user_city" property="userCity"/>
+        <result column="user_avatar" property="userAvatar"/>
+        <result column="user_sign" property="userSign"/>
+        <result column="user_gender" property="userGender"/>
+        <result column="user_status" property="userStatus"/>
+        <result column="user_date" property="userDate"/>
+    </resultMap>
+
+
+</mapper>

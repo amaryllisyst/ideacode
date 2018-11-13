@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.GuruDAO">
+
+    <select id="queryByPage" resultType="Guru">
+
+          select guru_id guruId,guru_name guruName,guru_gender guruGender ,guru_avatar guruAvatar from buddha_guru  limit #{start},#{rows}
+    </select>
+
+
+    <insert id="insert" parameterType="Guru">
+
+        insert into buddha_guru values(#{guruId},#{guruName},#{guruAvatar},#{guruGender})
+    </insert>
+
+    <delete id="delete" parameterType="Guru">
+        delete from buddha_guru where guru_id=#{guruId}
+    </delete>
+
+    <update id="update" parameterType="Guru">
+        update buddha_guru set guru_avatar=#{guruAvatar} ,guru_gender=#{guruGender} ,guru_name=#{guruName} where guru_id=#{guruId}
+    </update>
+    <select id="queryTotals" resultType="Long">
+        select count(guru_id) from buddha_guru
+    </select>
+    <select id="queryOne" resultType="Guru">
+      select guru_id guruId,guru_name guruName,guru_avatar guruAvatar,guru_gender guruGender from buddha_guru where guru_id=#{guruId}
+    </select>
+</mapper>

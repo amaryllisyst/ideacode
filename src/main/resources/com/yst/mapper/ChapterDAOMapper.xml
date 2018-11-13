@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.ChapterDAO">
+    <insert id="insert" parameterType="Chapter">
+       insert into buddha_chapter
+       values(#{chapterId},#{title},#{chapterSize},#{chapterDuration},#{chapterDownloadPath},#{chapterUploadDate},#{album.albumId})
+    </insert>
+
+    <delete id="delete" parameterType="Chapter">
+          delete from buddha_chapter where chapter_id=#{id}
+    </delete>
+
+    <update id="update" parameterType="Chapter">
+      update buddha_chapter set  chapter_title=#{title},chapter_size=#{chapterSize} ,
+      chapter_duration =#{chapterDuration},chapter_downloadPath =#{chapterDownloadPath},chapter_uploadDate=#{chapterUploadDate},album_id=#{album.albumId}
+      where chapter_id =#{chapterId}
+    </update>
+
+    <select id="queryByPage" resultMap="MyChapter">
+    /* select chapter_id ,chapter_title ,chapter_size ,chapter_duration ,chapter_downloadPath ,chapter_uploadDate,album_id from buddha_chapter*/
+          select chapter_id ,chapter_title ,chapter_size ,chapter_duration ,chapter_downloadPath ,chapter_uploadDate,a.album_id
+          from buddha_chapter c
+          full outer join buddha_album a
+          on c.album_id=a.album_id
+            limit #{start},#{rows}
+    </select>
+
+    <select id="queryCount" resultType="Long">
+       select count(*) from buddha_chapter where album_id=#{id}
+    </select>
+
+
+    <resultMap id="MyChapter" type="Chapter">
+        <id column="chapter_id" property="chapterId"/>
+        <result column="chapter_title" property="title"/>
+        <result column="chapter_size" property="chapterSize"/>
+        <result column="chapter_duration" property="chapterDuration"/>
+        <result column="chapter_downloadPath" property="chapterDownloadPath"/>
+        <result column="chapter_uploadDate" property="chapterUploadDate"/>
+        <association property="album" javaType="Album">
+
+            <id column="album_id" property="albumId"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

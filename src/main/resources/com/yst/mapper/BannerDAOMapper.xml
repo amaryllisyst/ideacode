@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.BannerDAO">
+    <insert id="insert" parameterType="Banner">
+        insert into buddha_banner values(#{bannerId},#{bannerTitle},#{bannerImgPath},#{bannerDesc},#{bannerStatus},#{bannerDate})
+    </insert>
+
+    <delete id="delete" parameterType="Banner">
+      delete from buddha_banner where banner_id=#{bannerId}
+    </delete>
+
+    <update id="update" parameterType="Banner">
+          update buddha_banner set banner_title=#{bannerTitle},banner_imgPath=#{bannerImgPath}, banner_desc=#{bannerDesc},  banner_status=#{bannerStatus},banner_date=#{bannerDate} where banner_id=#{bannerId}
+    </update>
+
+    <select id="queryByPage" resultType="Banner">
+        select banner_id bannerId,banner_title bannerTitle,banner_imgPath bannerImgPath,banner_desc bannerDesc,banner_status bannerStatus,banner_date bannerDate
+         from buddha_banner limit #{start},#{rows}
+    </select>
+    <select id="queryOne" resultType="Banner">
+        select banner_id bannerId,banner_title bannerTitle,banner_imgPath bannerImgPath,banner_desc bannerDesc,banner_status bannerStatus,banner_date bannerDate
+         from buddha_banner where banner_id=#{id}
+    </select>
+
+    <select id="queryTotals" resultType="Long">
+        select count(banner_id) from buddha_banner
+    </select>
+
+
+</mapper>

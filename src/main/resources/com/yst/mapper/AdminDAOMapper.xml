@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.AdminDAO">
+    <insert id="insert" parameterType="Admin">
+        insert into buddha_admin values(#{id},#{username},#{realname},#{password})
+    </insert>
+
+
+    <update id="update" parameterType="Album">
+      update buddha_admin set password=#{password} where id=#{id}
+    </update>
+
+
+    <select id="login" resultType="Admin">
+         select id,username,realname,password  from buddha_admin where username=#{username} and password=#{password}
+    </select>
+
+
+</mapper>

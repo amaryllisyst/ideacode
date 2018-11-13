@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.CourceDAO">
+    <insert id="insert" parameterType="Cource">
+          insert into buddha_cource(cource_id,cource_title,cource_marking,cource_createTime) values(#{courceId},#{courceTitle},#{courceMarking},#{courceCreateTime})
+    </insert>
+
+
+    <update id="update" parameterType="Cource">
+        update buddha_cource set cource_title=#{courceTitle}, cource_marking=#{courceMarking},cource_createTime=#{courceCreateTime} where cource_id=#{courceId}
+    </update>
+
+
+    <delete id="delete" parameterType="com.yst.entity.Album">
+         delete from buddha_cource where cource_id=#{courceId}
+    </delete>
+
+    <select id="queryAll" resultMap="MyCource">
+        select  cource_id, cource_title,cource_marking,cource_createTime  from buddha_cource
+    </select>
+    <select id="queryState" resultMap="MyCource">
+        select  cource_id, cource_title,cource_marking,cource_createTime  from buddha_cource where user_id=#{id}
+    </select>
+
+    <resultMap id="MyCource" type="Cource">
+        <id  property="courceId" column="cource_id"/>
+        <result property="courceTitle" column="cource_title"/>
+        <result property="courceMarking" column="cource_marking"/>
+        <result property="courceCreateTime" column="cource_createTime"/>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yst.dao.MenuDAO">
+
+    <select id="queryAll" resultMap="MyMenu">
+      select s.id sid, s.name sname, s.href shref, s.iconCls siconCls, p.id pid, p.name pname, p.href phref, p.iconCls piconCls
+      from buddha_menu p join buddha_menu s on p.id=s.parentId
+
+    </select>
+
+    <resultMap type="com.yst.entity.Menu" id="MyMenu">
+        <id column="pid" property="id"/>
+        <result column="phref" property="href"/>
+        <result column="pname" property="name"/>
+        <result column="piconCls" property="iconCls"/>
+        <collection property="menus"  ofType="com.yst.entity.Menu">
+            <id column="sid" property="id"/>
+            <result column="sname" property="name"/>
+            <result column="siconCls" property="iconCls"/>
+            <result column="shref" property="href"/>
+        </collection>
+
+    </resultMap>
+
+</mapper>
+
